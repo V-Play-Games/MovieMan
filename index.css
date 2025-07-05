@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "tailwindcss/theme";
+
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: Helvetica, Arial, sans-serif;
+  }
+}
