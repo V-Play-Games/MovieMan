@@ -17,7 +17,7 @@ export class Game {
         this.autoRevealedName.push(i)
       }
     }
-    "aeiou1234567890".split("").forEach((c) => {
+    "AEIOU1234567890".split("").forEach((c) => {
       this.guesses.push(c)
     })
   }
