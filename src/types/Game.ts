@@ -10,10 +10,10 @@ export class Game {
 
   constructor(movie: Movie) {
     this.movie = movie
-    this.name = movie.title.toLowerCase().split("")
+    this.name = movie.title.split("")
     for (let i = 0; i < this.name.length; i++) {
-      const c = this.name[i]
-      if ("aeiou".includes(c) || c > "z") {
+      const c = this.name[i].toLowerCase()
+      if ("aeiou".includes(c) || c > "z" || c < "a") {
         this.autoRevealedName.push(i)
       }
     }
@@ -22,19 +22,24 @@ export class Game {
     })
   }
 
-  public guess(letter: string): number[] {
+  public guess(letter: string) {
     letter = letter.toLowerCase()
-    if (!this.guesses.includes(letter)) {
-      return [];
+    console.log(`Guessed Name: ${this.guessedName}`)
+    if (this.guesses.includes(letter)) {
+      return
     }
-    const tor = []
+    let isCorrect = false
     for (let i = 0; i < this.name.length; i++) {
-      const c = this.name[i]
+      const c = this.name[i].toLowerCase()
       if (c === letter) {
+        isCorrect = true
         this.guessedName.push(i)
-        tor.push(i)
       }
     }
-    return tor;
+    if (isCorrect) {
+      this.guesses.push(letter.toUpperCase())
+    } else {
+      this.wrongGuesses.push(letter.toUpperCase())
+    }
   }
 }

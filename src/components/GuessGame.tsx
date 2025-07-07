@@ -5,8 +5,10 @@ import {Keyboard} from "./Keyboard.tsx";
 const baseUrl = "http://127.0.0.1:8080?category=bollywood,hindi";
 
 export const GuessGame: React.FC = () => {
-  const [game, setGame] = useState<Game | null>()
-  // const [guesses, setGuesses] = useState<string[]>([])
+  const [game, setGame] = useState<Game | null>(null)
+  const [guesses, setGuesses] = useState<string[]>([""])
+  const [currentGuess, setCurrentGuess] = useState<string>("")
+
   useEffect(() => {
     fetch(baseUrl)
       .then(response => {
@@ -19,10 +21,18 @@ export const GuessGame: React.FC = () => {
         if (value == null) {
           setGame(null)
         } else {
-          setGame(new Game(value))
+          const game = new Game(value);
+          setGame(game)
+          setGuesses(game.guesses)
         }
       })
   }, [])
+
+  const handleGuess = (guess: string) => {
+    game!.guess(guess)
+    setGuesses([...guesses, guess])
+    setCurrentGuess("")
+  }
 
   return (
     <div className="flex justify-center items-center w-full content-center">
@@ -47,7 +57,10 @@ export const GuessGame: React.FC = () => {
           }</div>
           Year: {game.movie.year} |
           Category: {game.movie.category.split("_").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ")}
-          <Keyboard game={game}/>
+          <div>{
+            currentGuess === "" ? (<span>Guess a letter!</span>) : (<span>Will you guess {currentGuess}?</span>)
+          }</div>
+          <Keyboard game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess} handleGuess={handleGuess}/>
         </div>
       )}
     </div>
