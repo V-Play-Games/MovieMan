@@ -5,7 +5,7 @@ import {Keyboard} from "./Keyboard.tsx";
 const baseUrl = "http://127.0.0.1:8080?category=bollywood,hindi";
 
 export const GuessGame: React.FC = () => {
-  const [game, setGame] = useState<Game | null>(null)
+  const [game, setGame] = useState<Game | string>()
   const [guesses, setGuesses] = useState<string[]>([""])
   const [currentGuess, setCurrentGuess] = useState<string>("")
 
@@ -19,28 +19,30 @@ export const GuessGame: React.FC = () => {
       })
       .then(value => {
         if (value == null) {
-          setGame(null)
+          setGame("No movie found for the given filters!")
         } else {
           const game = new Game(value);
           setGame(game)
           setGuesses(game.guesses)
         }
+      }).catch(() => {
+        setGame("Error fetching movie data. Please try again later.");
       })
   }, [])
 
   const handleGuess = (guess: string) => {
-    game!.guess(guess)
-    setGuesses([...guesses, guess])
-    setCurrentGuess("")
+    if (game instanceof Game) {
+      game.guess(guess)
+      guesses.push(guess)
+      setCurrentGuess("")
+    }
   }
 
   return (
     <div className="flex justify-center items-center w-full content-center">
       {(game === undefined) ? (
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      ) : (game === null) ? (
-        <div className="text-gray-600 dark:text-gray-300">No movie found for the given filters!</div>
-      ) : (
+      ) : (game instanceof Game) ? (
         <div className="flex flex-col items-center w-full space-y-6">
           <div>{
             game.name.map((c, index) => (
@@ -60,8 +62,11 @@ export const GuessGame: React.FC = () => {
           <div>{
             currentGuess === "" ? (<span>Guess a letter!</span>) : (<span>Will you guess {currentGuess}?</span>)
           }</div>
-          <Keyboard game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess} handleGuess={handleGuess}/>
+          <Keyboard game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}
+                    handleGuess={handleGuess}/>
         </div>
+      ) : (
+        <div className="text-gray-600 dark:text-gray-300">{game}</div>
       )}
     </div>
   )
