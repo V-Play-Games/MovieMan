@@ -8,21 +8,16 @@ interface EnterKeyProps {
 
 export const EnterKey: React.FC<EnterKeyProps> = ({index, currentGuess, handleGuess}) => {
   return (
-    currentGuess === "" ? (
-      <button
-        key={index}
-        className="bg-gray-500 text-white text-sm p-2 m-1 rounded"
-      >
-        Enter
-      </button>
-    ) : (
-      <button
-        key={index}
-        className="bg-green-500 text-white text-sm p-2 m-1 rounded hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 animate-all"
-        onClick={() => handleGuess(currentGuess)}
-      >
-        Enter
-      </button>
-    )
+    <button
+      key={index}
+      className={`text-white text-sm p-2 m-1 rounded duration-300 animate-all ${
+        currentGuess === ""
+          ? "bg-gray-500"
+          : "bg-green-500 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+      }`}
+      onClick={currentGuess !== "" ? () => handleGuess(currentGuess) : undefined}
+    >
+      Enter
+    </button>
   )
 }
