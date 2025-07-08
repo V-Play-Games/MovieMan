@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Game} from "../types/Game.ts";
 import {Keyboard} from "./Keyboard.tsx";
+import {FilterMenu} from "./FilterMenu";
 
 const baseUrl = "http://movie.vaibhavgt0.hackclub.app";
 
@@ -12,7 +13,6 @@ export const GuessGame: React.FC = () => {
   const [categories, setCategories] = useState<string[]>([]);
   const [selectedYears, setSelectedYears] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [filterMenuOpen, setFilterMenuOpen] = useState(false);
 
   // Fetch years and categories on mount
   useEffect(() => {
@@ -22,6 +22,7 @@ export const GuessGame: React.FC = () => {
       .catch(() => setYears([]));
     fetch(baseUrl + '/categories')
       .then(res => res.json())
+      .then(categories => categories.sort())
       .then(setCategories)
       .catch(() => setCategories([]));
     fetchMovie();
@@ -69,49 +70,16 @@ export const GuessGame: React.FC = () => {
       <header className="p-4 iterms-center text-center">
         <h1 className="text-3xl font-bold">MOVIE MAN</h1>
       </header>
-      <div className="absolute top-0 right-0 w-full flex justify-end pr-4 pt-4">
-        <button
-          className="text-3xl p-2 material-symbols-outlined rounded hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none"
-          onClick={() => setFilterMenuOpen(v => !v)}
-        >
-          menu
-        </button>
-      </div>
-      {filterMenuOpen && (
-        <div
-          className="absolute top-0 right-0 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded shadow-lg z-50 p-4 min-w-[250px]">
-          <div className="flex flex-col space-y-4">
-            <div>
-              <label className="block font-bold mb-1">Years</label>
-              <select multiple value={selectedYears} onChange={e => {
-                const options = Array.from(e.target.selectedOptions, o => o.value);
-                setSelectedYears(options);
-              }} className="border rounded p-1 min-w-[100px] w-full">
-                {years.map(year => (
-                  <option key={year} value={year}>{year}</option>
-                ))}
-              </select>
-            </div>
-            <div>
-              <label className="block font-bold mb-1">Categories</label>
-              <select multiple value={selectedCategories} onChange={e => {
-                const options = Array.from(e.target.selectedOptions, o => o.value);
-                setSelectedCategories(options);
-              }} className="border rounded p-1 min-w-[120px] w-full">
-                {categories.map(cat => (
-                  <option key={cat}
-                          value={cat}>{cat.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}</option>
-                ))}
-              </select>
-            </div>
-            <button onClick={() => {
-              fetchMovie();
-              setFilterMenuOpen(false);
-            }} className="bg-blue-500 text-white px-4 py-2 rounded">Fetch Movie
-            </button>
-          </div>
-        </div>
-      )}
+      <FilterMenu
+        years={years}
+        categories={categories}
+        selectedYears={selectedYears}
+        selectedCategories={selectedCategories}
+        setSelectedYears={setSelectedYears}
+        setSelectedCategories={setSelectedCategories}
+        onFetchMovie={fetchMovie}
+      />
+
 
       <div className="flex flex-col items-center w-full content-center">
         {(game === undefined) ? (
