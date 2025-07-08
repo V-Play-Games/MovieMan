@@ -3,7 +3,7 @@ import {Game} from "../types/Game.ts";
 import {Keyboard} from "./Keyboard.tsx";
 import {FilterMenu} from "./FilterMenu";
 
-const baseUrl = "http://movie.vaibhavgt0.hackclub.app";
+const baseUrl = "https://movie.vaibhavgt0.hackclub.app";
 
 export const GuessGame: React.FC = () => {
   const [game, setGame] = useState<Game | string>()
