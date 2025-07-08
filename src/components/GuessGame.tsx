@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Game} from "../types/Game.ts";
 import {Keyboard} from "./Keyboard.tsx";
 
-const baseUrl = "http://127.0.0.1:8080?category=bollywood,hindi";
+const baseUrl = "http://movie.vaibhavgt0.hackclub.app?category=bollywood,hindi";
 
 export const GuessGame: React.FC = () => {
   const [game, setGame] = useState<Game | string>()
