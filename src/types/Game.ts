@@ -5,7 +5,6 @@ export class Game {
   guesses: string[] = []
   wrongGuesses: string[] = []
   name: string[]
-  autoRevealedName: number[] = []
   guessedName: number[] = []
 
   constructor(movie: Movie) {
@@ -14,7 +13,7 @@ export class Game {
     for (let i = 0; i < this.name.length; i++) {
       const c = this.name[i].toLowerCase()
       if ("aeiou".includes(c) || c > "z" || c < "a") {
-        this.autoRevealedName.push(i)
+        this.guessedName.push(i)
       }
     }
     "AEIOU1234567890".split("").forEach(c => this.guesses.push(c))
@@ -49,8 +48,7 @@ export class Game {
   }
 
   public isGameWon(): boolean {
-    const uniqueIndices = new Set([...this.guessedName, ...this.autoRevealedName]);
-    return uniqueIndices.size === this.name.length;
+    return this.guessedName.length === this.name.length;
   }
 
   public isGameOver(): boolean {
