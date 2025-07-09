@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import {Game} from "../types/Game.ts";
 import {Keyboard} from "./Keyboard.tsx";
 import {FilterMenu} from "./FilterMenu";
+import {MovieNameDisplay} from "./MovieNameDisplay";
 
 const baseUrl = "https://movie.vaibhavgt0.hackclub.app";
 
@@ -67,8 +68,16 @@ export const GuessGame: React.FC = () => {
 
   return (
     <div className="bg-[#0e0f10] text-white w-screen h-screen">
-      <header className="p-4 iterms-center text-center">
-        <h1 className="text-3xl font-bold">MOVIE MAN</h1>
+      <header className="p-4 items-center text-center">
+        <h1 className="mt-4 text-5xl font-bold">{
+          "MOVIE MAN".split("").map((c, i) => (
+            (c === " " || !(game instanceof Game) || game.wrongGuesses.length <= i) ? (
+              <span>{c}</span>
+            ) : (
+              <span className="strikediag text-red-500">{c}<sub className="text-sm">{game.wrongGuesses[i]}</sub></span>
+            )
+          ))
+        }</h1>
       </header>
       <FilterMenu
         years={years}

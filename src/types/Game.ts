@@ -38,6 +38,9 @@ export class Game {
       this.guesses.push(letter.toUpperCase())
     } else {
       this.wrongGuesses.push(letter.toUpperCase())
+      if (this.wrongGuesses.length === 5) {
+        this.wrongGuesses.push(" ")
+      }
     }
   }
 }
