@@ -15,7 +15,8 @@ export const BackspaceKey: React.FC<BackspaceKeyProps> = ({index, currentGuess, 
           ? "bg-gray-500"
           : "bg-red-500 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
       }`}
-      onClick={currentGuess === "" ? undefined : () => setCurrentGuess("")}
+      onClick={() => setCurrentGuess("")}
+      disabled={currentGuess === ""}
     >
       backspace
     </button>

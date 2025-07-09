@@ -26,7 +26,8 @@ export const Key: React.FC<KeyProps> = ({index, char, game, currentGuess, setCur
           "bg-gray-500"
         )}`
       }
-      onClick={currentGuess === "" ? () => setCurrentGuess(char) : undefined}
+      onClick={() => setCurrentGuess(char)}
+      disabled={currentGuess !== ""}
     >
       {char}
     </button>)
