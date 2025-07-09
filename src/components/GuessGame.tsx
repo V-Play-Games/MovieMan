@@ -90,33 +90,37 @@ export const GuessGame: React.FC = () => {
         onFetchMovie={fetchMovie}
       />
 
-
-      <div className="flex flex-col items-center w-full content-center">
-        {(game === undefined) ? (
-          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-        ) : (game instanceof Game) ? (
-          <div className="flex flex-col items-center w-full space-y-6">
-            <MovieNameDisplay game={game}/>
+      {(game === undefined) ? (
+        <div className="flex justify-center items-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"/>
+        </div>
+      ) : (game instanceof Game) ? (
+        <div className="flex flex-col items-center w-full flex-1 justify-evenly content-center space-y-8">
+          <MovieNameDisplay key={1} game={game}/>
+          <div key={2}>
             Year: {game.movie.year} |
             Category: {game.movie.category.split("_").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ")}
             {currentGuess === "" ? (
-              <span>Guess a letter!</span>
+              <span className="flex justify-center">Guess a letter!</span>
             ) : (
-              <span>Will you guess {currentGuess}?</span>
+              <span className="flex justify-center">Will you guess {currentGuess}?</span>
             )}
-            <Keyboard game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}
-                      handleGuess={handleGuess}/>
-            <GameEndModal
-              game={game}
-              onPlayAgain={fetchMovie}
-              selectedYears={selectedYears}
-              selectedCategories={selectedCategories}
-            />
           </div>
-        ) : (
+          <Keyboard key={3} game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}
+                    handleGuess={handleGuess}/>
+          <GameEndModal
+            key={4}
+            game={game}
+            onPlayAgain={fetchMovie}
+            selectedYears={selectedYears}
+            selectedCategories={selectedCategories}
+          />
+        </div>
+      ) : (
+        <div className="flex justify-center items-center">
           <div className="text-gray-600 dark:text-gray-300">{game}</div>
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }
