@@ -13,7 +13,7 @@ export const Key: React.FC<KeyProps> = ({index, char, game, currentGuess, setCur
   return (
     <button
       key={index}
-      className={`text-white p-2 m-1 rounded duration-300 animate-all ${
+      className={`text-white text-2xl p-2 m-1 rounded duration-300 animate-all ${
         game.wrongGuesses.includes(char) ? (
           "bg-red-500"
         ) : game.guesses.includes(char) ? (
