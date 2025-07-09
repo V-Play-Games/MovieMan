@@ -17,13 +17,13 @@ export const Keyboard: React.FC<KeyboardProps> = ({game, currentGuess, setCurren
     <div className="absolute bottom-1/24 container max-w-4xl">
       {rows.split("\n").map((row, rowIndex) => (
         <div key={rowIndex} className="flex flex-wrap contain-content justify-center">
-          {row.split(" ").map((key, index) => (
+          {row.split(" ").map((key) => (
             key === "ENTER" ? (
-              <EnterKey index={`${rowIndex}-${index}`} currentGuess={currentGuess} handleGuess={handleGuess}/>
+              <EnterKey index={key} currentGuess={currentGuess} handleGuess={handleGuess}/>
             ) : key === "BACKSPACE" ? (
-              <BackspaceKey index={`${rowIndex}-${index}`} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
+              <BackspaceKey index={key} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
             ) : (
-              <Key char={key} index={`${rowIndex}-${index}`} game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
+              <Key char={key} index={key} game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
             )
           ))}
         </div>
