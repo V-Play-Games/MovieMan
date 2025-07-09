@@ -43,4 +43,17 @@ export class Game {
       }
     }
   }
+
+  public isGameLost(): boolean {
+    return this.wrongGuesses.length >= 8;
+  }
+
+  public isGameWon(): boolean {
+    const uniqueIndices = new Set([...this.guessedName, ...this.autoRevealedName]);
+    return uniqueIndices.size === this.name.length;
+  }
+
+  public isGameOver(): boolean {
+    return this.isGameWon() || this.isGameLost();
+  }
 }

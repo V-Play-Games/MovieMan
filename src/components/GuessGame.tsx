@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from "react";
-import {Game} from "../types/Game.ts";
-import {Keyboard} from "./Keyboard.tsx";
+import {Game} from "../types/Game";
+import {Keyboard} from "./Keyboard";
 import {FilterMenu} from "./FilterMenu";
 import {MovieNameDisplay} from "./MovieNameDisplay";
+import {GameEndModal} from "./GameEndModal";
 
 const baseUrl = "https://movie.vaibhavgt0.hackclub.app";
 
@@ -72,9 +73,9 @@ export const GuessGame: React.FC = () => {
         <h1 className="mt-4 text-5xl font-bold">{
           "MOVIE MAN".split("").map((c, i) => (
             (c === " " || !(game instanceof Game) || game.wrongGuesses.length <= i) ? (
-              <span>{c}</span>
+              <span key={i}>{c}</span>
             ) : (
-              <span className="strikediag text-red-500">{c}<sub className="text-sm">{game.wrongGuesses[i]}</sub></span>
+              <span key={i} className="strikediag text-red-500">{c}<sub className="text-sm">{game.wrongGuesses[i]}</sub></span>
             )
           ))
         }</h1>
@@ -105,6 +106,12 @@ export const GuessGame: React.FC = () => {
             )}
             <Keyboard game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}
                       handleGuess={handleGuess}/>
+            <GameEndModal
+              game={game}
+              onPlayAgain={fetchMovie}
+              selectedYears={selectedYears}
+              selectedCategories={selectedCategories}
+            />
           </div>
         ) : (
           <div className="text-gray-600 dark:text-gray-300">{game}</div>
