@@ -9,30 +9,30 @@ const baseUrl = "https://movie.vaibhavgt0.hackclub.app";
 
 export const GuessGame: React.FC = () => {
   const [game, setGame] = useState<Game | string>()
-  const [guesses, setGuesses] = useState<string[]>([""])
+  const [guesses, setGuesses] = useState<string[]>([])
   const [currentGuess, setCurrentGuess] = useState<string>("")
-  const [years, setYears] = useState<string[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
-  const [selectedYears, setSelectedYears] = useState<string[]>([]);
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [years, setYears] = useState<string[]>([])
+  const [categories, setCategories] = useState<string[]>([])
+  const [selectedYears, setSelectedYears] = useState<string[]>([])
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
   // Fetch years and categories on mount
   useEffect(() => {
-    fetch(baseUrl + '/years')
+    fetch(baseUrl + '/api/alpha/years')
       .then(res => res.json())
       .then(setYears)
-      .catch(() => setYears([]));
-    fetch(baseUrl + '/categories')
+      .catch(() => setYears([]))
+    fetch(baseUrl + '/api/alpha/categories')
       .then(res => res.json())
       .then(categories => categories.sort())
       .then(setCategories)
-      .catch(() => setCategories([]));
-    fetchMovie();
+      .catch(() => setCategories([]))
+    fetchMovie()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [])
 
   const fetchMovie = () => {
-    let url = baseUrl;
+    let url = baseUrl + '/api/alpha/movies/random';
     const params: string[] = [];
     if (selectedYears.length > 0) params.push(`year=${selectedYears.join(',')}`);
     if (selectedCategories.length > 0) params.push(`category=${selectedCategories.join(',')}`);
@@ -70,15 +70,18 @@ export const GuessGame: React.FC = () => {
   return (
     <div className="bg-[#0e0f10] text-white w-screen h-screen">
       <header className="p-4 items-center text-center">
-        <h1 className="mt-4 text-5xl font-bold">{
-          "MOVIE MAN".split("").map((c, i) => (
-            (c === " " || !(game instanceof Game) || game.wrongGuesses.length <= i) ? (
-              <span key={i}>{c}</span>
-            ) : (
-              <span key={i} className="strikediag text-red-500">{c}<sub className="text-sm">{game.wrongGuesses[i]}</sub></span>
-            )
-          ))
-        }</h1>
+        <h1 className="mt-4 text-5xl font-bold">
+          {
+            "MOVIE MAN".split("").map((c, i) => (
+              (c === " " || !(game instanceof Game) || game.wrongGuesses.length <= i) ? (
+                <span key={i}>{c}</span>
+              ) : (
+                <span key={i} className="strikediag text-red-500">{c}<sub
+                  className="text-sm">{game.wrongGuesses[i]}</sub></span>
+              )
+            ))
+          }
+        </h1>
       </header>
       <FilterMenu
         years={years}
