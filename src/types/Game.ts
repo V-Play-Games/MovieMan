@@ -44,7 +44,7 @@ export class Game {
   }
 
   public isGameLost(): boolean {
-    return this.wrongGuesses.length >= 8;
+    return this.wrongGuesses.length >= 9;
   }
 
   public isGameWon(): boolean {
