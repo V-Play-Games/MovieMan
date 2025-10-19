@@ -68,8 +68,8 @@ export const GuessGame: React.FC = () => {
   }
 
   return (
-    <div className="bg-[#0e0f10] text-white w-screen h-screen">
-      <header className="p-4 items-center text-center">
+    <div className="bg-[#0e0f10] text-white w-screen h-screen flex flex-col overflow-hidden">
+      <header className="p-4 items-center text-center flex-shrink-0">
         <h1 className="mt-4 text-5xl font-bold">
           {
             "MOVIE MAN".split("").map((c, i) => (
@@ -94,13 +94,14 @@ export const GuessGame: React.FC = () => {
       />
 
       {(game === undefined) ? (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center flex-1">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"/>
         </div>
       ) : (game instanceof Game) ? (
-        <div className="flex flex-col items-center w-full flex-1 justify-evenly content-center space-y-8">
+        <div
+          className="flex flex-col items-center w-full flex-1 justify-start content-center space-y-2 overflow-y-auto px-4 pb-[180px] md:pb-[200px]">
           <MovieNameDisplay key={1} game={game}/>
-          <div key={2}>
+          <div key={2} className="flex-shrink-0">
             Year: {game.movie.year} |
             Category: {game.movie.category.split("_").map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(" ")}
             {currentGuess === "" ? (
@@ -120,7 +121,7 @@ export const GuessGame: React.FC = () => {
           />
         </div>
       ) : (
-        <div className="flex justify-center items-center">
+        <div className="flex justify-center items-center flex-1">
           <div className="text-gray-600 dark:text-gray-300">{game}</div>
         </div>
       )}

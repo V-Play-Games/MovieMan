@@ -6,7 +6,7 @@ interface MovieNameDisplayProps {
 }
 
 export const MovieNameDisplay: React.FC<MovieNameDisplayProps> = ({ game }) => (
-  <div className="flex flex-row flex-wrap items-center justify-center text-2xl">
+  <div className="flex flex-row flex-wrap items-center justify-center text-2xl flex-shrink-0">
     {game.name.map((c, index) => (
       (c === ' ') ? (
         <button key={index} className="text-gray-500 dark:text-gray-400 text-5xl mb-2">/</button>
@@ -20,4 +20,3 @@ export const MovieNameDisplay: React.FC<MovieNameDisplayProps> = ({ game }) => (
     ))}
   </div>
 );
-
