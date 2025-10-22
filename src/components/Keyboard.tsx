@@ -12,22 +12,24 @@ interface KeyboardProps {
 }
 
 export const Keyboard: React.FC<KeyboardProps> = ({game, currentGuess, setCurrentGuess, handleGuess}) => {
-  const rows = "1 2 3 4 5 6 7 8 9 0\nQ W E R T Y U I O P\nA S D F G H J K L\nENTER Z X C V B N M BACKSPACE";
+  const rows = "Q W E R T Y U I O P\nA S D F G H J K L\nENTER Z X C V B N M BACKSPACE";
   return (
-    <div className="fixed left-0 right-0 bottom-0 w-full flex justify-center pb-2 md:pb-4 px-1 md:px-2 max-w-4xl">
-      {rows.split("\n").map((row, rowIndex) => (
-        <div key={rowIndex} className="flex flex-nowrap justify-center">
-          {row.split(" ").map((key) => (
-            key === "ENTER" ? (
-              <EnterKey index={key} currentGuess={currentGuess} handleGuess={handleGuess}/>
-            ) : key === "BACKSPACE" ? (
-              <BackspaceKey index={key} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
-            ) : (
-              <Key char={key} index={key} game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
-            )
-          ))}
-        </div>
-      ))}
+    <div className="fixed left-0 right-0 bottom-0 w-full flex justify-center bg-[#0e0f10] pb-2 md:pb-4 px-1 md:px-2">
+      <div className="w-full max-w-4xl flex flex-col">
+        {rows.split("\n").map((row, rowIndex) => (
+          <div key={rowIndex} className="flex flex-nowrap justify-center">
+            {row.split(" ").map((key) => (
+              key === "ENTER" ? (
+                <EnterKey index={key} currentGuess={currentGuess} handleGuess={handleGuess}/>
+              ) : key === "BACKSPACE" ? (
+                <BackspaceKey index={key} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
+              ) : (
+                <Key char={key} index={key} game={game} currentGuess={currentGuess} setCurrentGuess={setCurrentGuess}/>
+              )
+            ))}
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
