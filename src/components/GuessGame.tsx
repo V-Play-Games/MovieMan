@@ -13,19 +13,29 @@ export const GuessGame: React.FC = () => {
   const [currentGuess, setCurrentGuess] = useState<string>("")
   const [years, setYears] = useState<string[]>([])
   const [categories, setCategories] = useState<string[]>([])
-  const [selectedYears, setSelectedYears] = useState<string[]>([])
+  const [yearRange, setYearRange] = useState<{ min: number; max: number }>({ min: 1900, max: new Date().getFullYear() })
   const [selectedCategories, setSelectedCategories] = useState<string[]>([])
 
   // Fetch years and categories on mount
   useEffect(() => {
     fetch(baseUrl + '/api/alpha/years')
       .then(res => res.json())
-      .then(setYears)
+      .then(fetchedYears => {
+        setYears(fetchedYears)
+        if (fetchedYears.length > 0) {
+          const min = parseInt(fetchedYears[0]);
+          const max = parseInt(fetchedYears[fetchedYears.length - 1]);
+          setYearRange({ min, max });
+        }
+      })
       .catch(() => setYears([]))
     fetch(baseUrl + '/api/alpha/categories')
       .then(res => res.json())
-      .then(categories => categories.sort())
-      .then(setCategories)
+      .then(categories => {
+        const sorted = categories.sort();
+        setCategories(sorted);
+        setSelectedCategories(sorted); // Initialize with all categories selected
+      })
       .catch(() => setCategories([]))
     fetchMovie()
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,7 +44,20 @@ export const GuessGame: React.FC = () => {
   const fetchMovie = () => {
     let url = baseUrl + '/api/alpha/movies/random';
     const params: string[] = [];
-    if (selectedYears.length > 0) params.push(`year=${selectedYears.join(',')}`);
+    const minYear = years.length > 0 ? parseInt(years[0]) : 1900;
+    const maxYear = years.length > 0 ? parseInt(years[years.length - 1]) : new Date().getFullYear();
+
+    // Only add year filter if range is not the full range
+    if (yearRange.min !== minYear || yearRange.max !== maxYear) {
+      const yearsInRange = years.filter(y => {
+        const year = parseInt(y);
+        return year >= yearRange.min && year <= yearRange.max;
+      });
+      if (yearsInRange.length > 0) {
+        params.push(`year=${yearsInRange.join(',')}`);
+      }
+    }
+
     if (selectedCategories.length > 0) params.push(`category=${selectedCategories.join(',')}`);
     if (params.length > 0) url += '?' + params.join('&');
     setGame(undefined);
@@ -86,9 +109,9 @@ export const GuessGame: React.FC = () => {
       <FilterMenu
         years={years}
         categories={categories}
-        selectedYears={selectedYears}
+        yearRange={yearRange}
         selectedCategories={selectedCategories}
-        setSelectedYears={setSelectedYears}
+        setYearRange={setYearRange}
         setSelectedCategories={setSelectedCategories}
         onFetchMovie={fetchMovie}
       />
@@ -116,7 +139,8 @@ export const GuessGame: React.FC = () => {
             key={4}
             game={game}
             onPlayAgain={fetchMovie}
-            selectedYears={selectedYears}
+            yearRange={yearRange}
+            allYears={years}
             selectedCategories={selectedCategories}
           />
         </div>

@@ -4,7 +4,8 @@ import {Game} from "../types/Game";
 interface GameModalProps {
   game: Game;
   onPlayAgain: () => void;
-  selectedYears: string[];
+  yearRange: { min: number; max: number };
+  allYears: string[];
   selectedCategories: string[];
 }
 
@@ -12,7 +13,8 @@ export const GameEndModal: React.FC<GameModalProps> =
   ({
      game,
      onPlayAgain,
-     selectedYears,
+     yearRange,
+     allYears,
      selectedCategories
    }) => {
     if (!game.isGameOver()) return null;
@@ -46,12 +48,12 @@ export const GameEndModal: React.FC<GameModalProps> =
               </div>
             </div>
 
-            {selectedYears.length !== 0 || selectedCategories.length !== 0 && (
+            {(yearRange.min !== parseInt(allYears[0]) || yearRange.max !== parseInt(allYears[allYears.length - 1]) || selectedCategories.length !== 0) && (
               <div className="bg-[#2a2b2c] p-4 rounded mb-6">
                 <h3 className="text-lg font-semibold mb-2">Filter Used:</h3>
                 <div className="text-gray-300">
-                  {selectedYears.length > 0 && (
-                    <p><span className="font-medium text-white">Years:</span> {selectedYears.join(", ")}</p>
+                  {(yearRange.min !== parseInt(allYears[0]) || yearRange.max !== parseInt(allYears[allYears.length - 1])) && (
+                    <p><span className="font-medium text-white">Years:</span> {yearRange.min} - {yearRange.max}</p>
                   )}
                   {selectedCategories.length > 0 && (
                     <p><span className="font-medium text-white">Categories:</span> {selectedCategories.map(cat =>
