@@ -42,7 +42,7 @@ export const FilterMenu: React.FC<FilterMenuProps> =
           onClick={() => setFilterMenuOpen(v => !v)}
           aria-label="Toggle filter menu"
         >
-          {filterMenuOpen ? "close" : "menu"}
+          menu
         </button>
 
         {filterMenuOpen && (
@@ -57,8 +57,19 @@ export const FilterMenu: React.FC<FilterMenuProps> =
             filterMenuOpen ? 'translate-x-0' : '-translate-x-full'
           }`}
         >
-          <div className="flex flex-col h-full p-6 pt-20">
-            <h2 className="text-2xl font-bold mb-6 text-white">Filters</h2>
+          <div className="flex flex-col h-full p-4">
+            <div className="flex p-2 pb-4 justify-between w-full">
+              <h2 className="text-2xl font-bold text-white">Filters</h2>
+              <button
+                data-hamburger-button
+                className="text-3xl material-symbols-outlined rounded hover:bg-gray-700/30 focus:outline-none transition-all duration-300"
+                onClick={() => setFilterMenuOpen(v => !v)}
+                aria-label="Toggle filter menu"
+              >
+                close
+              </button>
+            </div>
+
 
             <div className="flex-1 overflow-y-auto space-y-6">
               <div>
